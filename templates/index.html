@@ -8,10 +8,10 @@
 
 <h1>PLC attack tool</h1>
 <h2>PLC Address</h2>
-<input id="octet1" type="number" min="1" max="255" step="1" value="192" onchange="updateIp()"/>
-<input id="octet2" type="number" min="1" max="255" step="1" value="168" onchange="updateIp()"/>
-<input id="octet3" type="number" min="1" max="255" step="1" value="127" onchange="updateIp()"/>
-<input id="octet4" type="number" min="1" max="255" step="1" value="1" onchange="updateIp()"/>
+<input id="octet1" type="number" min="1" max="255" step="1" onchange="updateIp()"/>
+<input id="octet2" type="number" min="1" max="255" step="1" onchange="updateIp()"/>
+<input id="octet3" type="number" min="1" max="255" step="1" onchange="updateIp()"/>
+<input id="octet4" type="number" min="1" max="255" step="1" onchange="updateIp()"/>
 <h2>PLC Status</h2>
 <div id="plcStatus"></div>
 <h2>Modbus Attacks</h2>
@@ -28,32 +28,29 @@
 </p>
 <h2>DoS Attacks</h2>
 <p>
-    <form action="/attack/plc/modbus/disable" method="post" onsubmit='disableButtons()'>
-        <button name="modbusDisable" class="attackButton" type="submit">Disable control</button>
+    <form action="/attack/dos/tcp-syn" method="post" onsubmit='disableButtons()'>
+        <button name="dosTcpSyn" class="attackButton" type="submit">TCP Syn</button>
     </form>
-    <form action="/attack/plc/modbus/disrupt" method="post" onsubmit='disableButtons()'>
-        <button name="modbusDisrupt" class="attackButton" type="submit">Disrupt operation</button>
+    <form action="/attack/dos/tcp-xmas" method="post" onsubmit='disableButtons()'>
+        <button name="dosTcpXmas" class="attackButton" type="submit">TCP Xmas</button>
     </form>
 </p>
 <h2>Malware</h2>
 <p>
-    <form action="/attack/plc/modbus/disable" method="post" onsubmit='disableButtons()'>
-        <button name="modbusDisable" class="attackButton" type="submit">Disable control</button>
+    <form action="/attack/malware/eicar" method="post" onsubmit='disableButtons()'>
+        <button name="malwareEicar" class="attackButton" type="submit">EICAR test</button>
     </form>
-    <form action="/attack/plc/modbus/disrupt" method="post" onsubmit='disableButtons()'>
-        <button name="modbusDisrupt" class="attackButton" type="submit">Disrupt operation</button>
+    <form action="/attack/malware/passwd" method="post" onsubmit='disableButtons()'>
+        <button name="malwarePasswd" class="attackButton" type="submit">Steal password</button>
     </form>
 </p>
 <h2>CVE Exploits</h2>
 <p>
-    <form action="/attack/plc/modbus/disable" method="post" onsubmit='disableButtons()'>
-        <button name="modbusDisable" class="attackButton" type="submit">Disable control</button>
+    <form action="/attack/cve/2015-5374" method="post" onsubmit='disableButtons()'>
+        <button name="cve-2015-5374" class="attackButton" type="submit">CVE-2015-5374</button>
     </form>
-    <form action="/attack/plc/modbus/disrupt" method="post" onsubmit='disableButtons()'>
-        <button name="modbusDisrupt" class="attackButton" type="submit">Disrupt operation</button>
-    </form>
-    <form action="/attack/plc/modbus/restore" method="post" onsubmit='disableButtons()'>
-        <button name="modbusRestore" class="attackButton" type="submit">Restore control & operation</button>
+    <form action="/attack/cve/2014-0750" method="post" onsubmit='disableButtons()'>
+        <button name="cve-2014-0750" class="attackButton" type="submit">CVE-2014-0750</button>
     </form>
 </p>
 <h2>Log</h2>
