@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import logging
 from concurrent_log_handler import ConcurrentRotatingFileHandler
 from lib import attack
@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def show_home_page():
-    return render_template('index.html', log=read_log())
+    return render_template('index.html')
 
 
 @app.route('/update/plc_ip', methods=['POST', 'GET'])
@@ -50,52 +50,45 @@ def read_log():
 @app.route('/attack/plc/modbus/disable', methods=['POST'])
 def execute_modbus_disable():
     logger.info('[Modbus attack: Disable] ' + attack.mb_stop(IP_PLC))
-    logger.info('[Modbus attack: Disable] DONE')
-    return render_template('index.html')
+    return 'OK'
 
 
 @app.route('/attack/plc/modbus/disrupt', methods=['POST'])
 def execute_modbus_disrupt():
     logger.info('[Modbus attack: Disrupt] ' + attack.mb_disrupt(IP_PLC))
-    logger.info('[Modbus attack: Disrupt] DONE')
-    return render_template('index.html')
+    return 'OK'
 
 
 @app.route('/attack/plc/modbus/restore', methods=['POST'])
 def execute_modbus_restore():
     logger.info('[Modbus attack: Restore] ' + attack.mb_restore(IP_PLC))
-    logger.info('[Modbus attack: Restore] DONE')
-    return render_template('index.html')
+    return 'OK'
 
 
 @app.route('/attack/dos/tcp-syn', methods=['POST'])
 def execute_dos_tcp_syn():
-    logger.info('[DoS attack: TCP Syn] ' + attack.dos_syn(IP_PLC))
-    logger.info('[DoS attack: TCP Syn] DONE')
-    return render_template('index.html')
+    logger.info('[DoS attack: TCP Syn] ' + IP_PLC + " " + attack.dos_syn(IP_PLC))
+    return 'OK'
 
 
 @app.route('/attack/dos/tcp-xmas', methods=['POST'])
 def execute_dos_tcp_xmas():
-    logger.info('[DoS attack: TCP Xmas] ' + attack.dos_xmas(IP_PLC))
-    logger.info('[DoS attack: TCP Xmas] DONE')
-    return render_template('index.html')
+    logger.info('[DoS attack: TCP Xmas] ' + IP_PLC + " " + attack.dos_xmas(IP_PLC))
+    return 'OK'
 
 
 @app.route('/attack/malware/eicar', methods=['POST'])
 def execute_malware_eicar():
-    logger.info('[Malware: EICAR] Sending EICAR malware test packet to target'
+    logger.info('[Malware: EICAR] Sending EICAR malware test packet to target ' + IP_PLC + " "
                 + attack.malware_eicar(IP_PLC))
-    logger.info('[Malware: EICAR] DONE')
-    return render_template('index.html')
+    return 'OK'
 
 
 @app.route('/attack/malware/passwd', methods=['POST'])
 def execute_malware_passwd():
-    logger.info('[Malware: Steal password] Trying to retrieve password from target'
+    logger.info('[Malware: Steal password] Trying to retrieve password from target ' + IP_PLC + " "
                 + attack.malware_passwd(IP_PLC))
-    logger.info('[Malware: Steal password] DONE')
-    return render_template('index.html')
+    return 'OK'
 
 
 @app.route('/attack/cve/2015-5374', methods=['POST'])
@@ -103,7 +96,7 @@ def execute_cve_2015_5374():
     logger.info('[Exploit: CVE-2015-5374] Exploiting Siemens SIPROTEC 4 and SIPROTEC Compact EN100 Ethernet Module '
                 '< V4.25' + attack.cve_2015_5374(IP_PLC))
     logger.info('[Exploit: CVE-2015-5374] DONE')
-    return render_template('index.html')
+    return 'OK'
 
 
 @app.route('/attack/cve/2014-0750', methods=['POST'])
@@ -111,7 +104,7 @@ def execute_cve_2014_0705():
     logger.info('[Exploit: CVE-2014-0750] Exploiting GE Proficy CIMPLICITY HMI - Remote Code Execution'
                 + attack.cve_2014_0750(IP_PLC))
     logger.info('[Exploit: CVE-2014-0750] DONE')
-    return render_template('index.html')
+    return 'OK'
 
 
 def init_log():
