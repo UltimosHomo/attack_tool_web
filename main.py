@@ -10,8 +10,28 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def show_home_page():
-    return render_template('index.html')
+def show_default_page():
+    return render_template('plc-lt.html')
+
+
+@app.route('/plc-lt')
+def show_plc_lt_page():
+    return render_template('plc-lt.html')
+
+
+@app.route('/plc-conveyor')
+def show_plc_conveyor_page():
+    return render_template('plc-conveyor.html')
+
+
+@app.route('/ied')
+def show_ied_page():
+    return render_template('ied.html')
+
+
+@app.route('/scada')
+def show_scada_page():
+    return render_template('scada.html')
 
 
 @app.route('/update/plc_ip', methods=['POST', 'GET'])
@@ -95,7 +115,6 @@ def execute_malware_passwd():
 def execute_cve_2015_5374():
     logger.info('[Exploit: CVE-2015-5374] Exploiting Siemens SIPROTEC 4 and SIPROTEC Compact EN100 Ethernet Module '
                 '< V4.25' + attack.cve_2015_5374(IP_PLC))
-    logger.info('[Exploit: CVE-2015-5374] DONE')
     return 'OK'
 
 
@@ -103,7 +122,6 @@ def execute_cve_2015_5374():
 def execute_cve_2014_0705():
     logger.info('[Exploit: CVE-2014-0750] Exploiting GE Proficy CIMPLICITY HMI - Remote Code Execution'
                 + attack.cve_2014_0750(IP_PLC))
-    logger.info('[Exploit: CVE-2014-0750] DONE')
     return 'OK'
 
 
