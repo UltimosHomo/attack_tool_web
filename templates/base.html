@@ -87,24 +87,24 @@
     </label>
     <div class="settings-content">
         <div class="number-input">
-            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown();updateIp()">-</button>
-            <input id="octet1" type="number" min="0" max="255" step="1"/>
-            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp();updateIp()">+</button>
+            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown();this.parentNode.querySelector('input[type=number]').onchange()">-</button>
+            <input class="ip-octet" id="octet1" type="number" min="0" max="255" step="1" onchange="updateIp()"/>
+            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp();this.parentNode.querySelector('input[type=number]').onchange()">+</button>
         </div>
         <div class="number-input">
-            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown();updateIp()">-</button>
-            <input id="octet2" type="number" min="0" max="255" step="1"/><br>
-            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp();updateIp()">+</button>
+            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown();this.parentNode.querySelector('input[type=number]').onchange()">-</button>
+            <input class="ip-octet" id="octet2" type="number" min="0" max="255" step="1" onchange="updateIp()"/>
+            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp();this.parentNode.querySelector('input[type=number]').onchange()">+</button>
         </div>
         <div class="number-input">
-            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown();updateIp()">-</button>
-            <input id="octet3" type="number" min="0" max="255" step="1"/><br>
-            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp();updateIp()">+</button>
+            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown();this.parentNode.querySelector('input[type=number]').onchange()">-</button>
+            <input class="ip-octet" id="octet3" type="number" min="0" max="255" step="1" onchange="updateIp()"/><br>
+            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp();this.parentNode.querySelector('input[type=number]').onchange()">+</button>
         </div>
         <div class="number-input">
-            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown();updateIp()">-</button>
-            <input id="octet4" type="number" min="0" max="255" step="1"/><br>
-            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp();updateIp()">+</button>
+            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown();this.parentNode.querySelector('input[type=number]').onchange()">-</button>
+            <input class="ip-octet" id="octet4" type="number" min="0" max="255" step="1" onchange="updateIp()"/><br>
+            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp();this.parentNode.querySelector('input[type=number]').onchange()">+</button>
         </div>
     </div>
 </div>
@@ -122,7 +122,7 @@
         refreshStatus();
         refreshLog();
         refreshIp();
-    })
+    });
 
     document.querySelectorAll('.accordion-button').forEach(button => {
         button.addEventListener('click', () => {
@@ -161,12 +161,16 @@
         var c = document.getElementById("octet3").value.toString();
         var d = document.getElementById("octet4").value.toString();
         var ip = a + "." + b + "." + c + "." + d
-        var xhttp = new XMLHttpRequest();
-        xhttp.open("POST", "/update/plc_ip", true);
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send("ip=" + ip);
-        refreshIp();
-        refreshLog();
+        $.ajax({
+            url: "/update/plc_ip",
+            type: "post",
+            data: {'ip':ip},
+            success: function(data) {
+                if (data=="OK"){
+                    refreshLog();
+                }
+            }
+        });
     }
 
     function refreshStatus() {

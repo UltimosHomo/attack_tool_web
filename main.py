@@ -43,8 +43,9 @@ def update_plc_ip():
         try:
             socket.inet_aton(request.form['ip'])
             IP_PLC = request.form['ip']
+            print(IP_PLC)
             logger.info('[Settings: PLC address changed] ' + IP_PLC)
-            return IP_PLC
+            return "OK"
         except socket.error:
             return IP_PLC
 
