@@ -1,10 +1,18 @@
 from scapy.all import *
 from pymodbus.client.sync import ModbusTcpClient
 from pymodbus.exceptions import *
-# import goose
+import os
 
 
 time_out = 2
+
+
+def ping_status_check(target):
+    r = os.system('ping %s -n 1' %(target,))
+    if r == 0:
+        return("Online")
+    else:
+        return("Offline")
 
 
 def plc_status_check(target):

@@ -121,6 +121,7 @@
     $(window).on('load',function(){
         refreshStatus();
         refreshLog();
+        {% block defIp %} {% endblock %}
         refreshIp();
     });
 
@@ -162,7 +163,7 @@
         var d = document.getElementById("octet4").value.toString();
         var ip = a + "." + b + "." + c + "." + d
         $.ajax({
-            url: "/update/plc_ip",
+            url: "/update/target",
             type: "post",
             data: {'ip':ip},
             success: function(data) {
@@ -173,18 +174,20 @@
         });
     }
 
-    function refreshStatus() {
+    function setDefaultIp(ip) {
         $.ajax({
-            url: "/status/plc",
-            type: "get",
+            url: "/update/target",
+            type: "post",
+            data: {'ip':ip},
             success: function(data) {
-                $("#plc-status").html(data);
-            },
-            complete: function() {
-                setTimeout(refreshStatus, 1000);
+                if (data=="OK"){
+                    refreshLog();
+                }
             }
         });
     }
+
+{% block script %} {% endblock %}
 
     function refreshLog() {
         $.ajax({
@@ -198,7 +201,7 @@
 
     function refreshIp() {
         $.ajax({
-            url: "/update/plc_ip",
+            url: "/update/target",
             type: "get",
             success: function(data) {
                 var arrayIp = data.split(".");

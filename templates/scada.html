@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block body %}
-<h1>HMI Status: <span id="plc-status"></span></h1>
+<h1>HMI Status: <span id="target-status"></span></h1>
 
 <section class="buttons">
     <div class="accordion">
@@ -56,4 +56,21 @@
 
 <h2>Log</h2>
 <div id="log" class="log-window"></div>
+{% endblock %}
+
+            {% block defIp %}setDefaultIp("192.168.127.100");{% endblock %}
+
+{% block script %}
+    function refreshStatus() {
+        $.ajax({
+            url: "/status/ping",
+            type: "get",
+            success: function(data) {
+                $("#target-status").html(data);
+            },
+            complete: function() {
+                setTimeout(refreshStatus, 1000);
+            }
+        });
+    }
 {% endblock %}
