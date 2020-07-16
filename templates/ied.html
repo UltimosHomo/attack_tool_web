@@ -13,12 +13,11 @@
 
 <section class="buttons">
     <div class="accordion">
-        <button id="button-modbus-attacks" class="accordion-button">GOOSE</button>
+        <button id="button-goose-attacks" class="accordion-button">GOOSE</button>
         <div class="accordion-content">
             <div class="button-group">
-                <button id="button-modbus-disable" class="attack-button" onclick="sendCommand('/attack/plc/modbus/disable')">Disable control</button>
-                <button id="button-modbus-disrupt" class="attack-button" onclick="sendCommand('/attack/plc/modbus/disrupt')">Disrupt operation</button>
-                <button id="button-modbus-restore" class="attack-button" onclick="sendCommand('/attack/plc/modbus/restore')">Restore</button>
+                <button id="button-goose-trip" class="attack-button" onclick="sendCommand('/attack/ied/goose/trip')">Trip</button>
+                <button id="button-goose-block" class="attack-button" onclick="sendCommand('/attack/ied/goose/block')">Block</button>
             </div>
         </div>
     </div>

