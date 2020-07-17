@@ -16,9 +16,7 @@
         <button id="button-modbus-attacks" class="accordion-button">OPC</button>
         <div class="accordion-content">
             <div class="button-group">
-                <button id="button-modbus-disable" class="attack-button" onclick="sendCommand('/attack/plc/modbus/disable')">Disable control</button>
-                <button id="button-modbus-disrupt" class="attack-button" onclick="sendCommand('/attack/plc/modbus/disrupt')">Disrupt operation</button>
-                <button id="button-modbus-restore" class="attack-button" onclick="sendCommand('/attack/plc/modbus/restore')">Restore</button>
+                <button id="button-modbus-disable" class="disabled-button">N/A</button>
             </div>
         </div>
     </div>
@@ -47,8 +45,9 @@
         <button id="button-cve-exploits" class="accordion-button">CVE</button>
         <div class="accordion-content">
             <div class="button-group">
-                <button name="cve-2015-5374" class="attack-button" onclick="sendCommand('/attack/cve/2015-5374')">CVE-2015-5374</button>
-                <button name="cve-2014-0750" class="attack-button" onclick="sendCommand('/attack/cve/2014-0750')">CVE-2014-0750</button>
+                <button name="cve-2019-0708" class="attack-button" onclick="sendCommand('/attack/cve/2019-0708')">CVE-2019-0708</button>
+                <button name="cve-2013-0657" class="attack-button" onclick="sendCommand('/attack/cve/2013-0657')">CVE-2013-0657</button>
+                <button name="cve-2012-0002" class="attack-button" onclick="sendCommand('/attack/cve/2012-0002')">CVE-2012-0002</button>
             </div>
         </div>
     </div>
