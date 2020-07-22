@@ -152,10 +152,17 @@ def execute_cve_2012_0002():
     return 'OK'
 
 
-@app.route('/attack/ied/goose/trip', methods=['POST'])
-def execute_goose_trip():
-    logger.info('[GOOSE: Trip] Sending trip command to IED '
+@app.route('/attack/ied/goose/trip620', methods=['POST'])
+def execute_goose_trip620():
+    logger.info('[GOOSE: Trip] Mimicking trip command from REF620 '
                 + goose.ref620_trip())
+    return 'OK'
+
+
+@app.route('/attack/ied/goose/trip670', methods=['POST'])
+def execute_goose_trip670():
+    logger.info('[GOOSE: Trip] Mimicking trip command from RED670 '
+                + goose.red670_trip())
     return 'OK'
 
 
@@ -185,5 +192,5 @@ def init_log():
 
 if __name__ == "__main__":
     init_log()
-    app.run()
+    app.run(host='0.0.0.0')
     # app.run(debug=True)
