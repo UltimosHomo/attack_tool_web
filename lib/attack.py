@@ -203,6 +203,7 @@ def cve_2013_0657(target):
         status = "Connection error: " + str(exc)
     else:
         sock.send(payload)
+        time.sleep(3)
         sock.close()
         status = "DONE"
     return status
