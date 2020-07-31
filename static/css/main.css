@@ -299,7 +299,7 @@ h2 {
 }
 
 .settings {
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 0;
     display: block;
