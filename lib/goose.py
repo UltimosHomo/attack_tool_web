@@ -113,29 +113,28 @@ def red670_packet():
 
 
 def ref620_trip():
-    packet = ref620_packet()
+    pkt = ref620_packet()
     for i in range(PACKET_QTY):
-        sendp(packet, iface=INTERFACE)
+        sendp(pkt, iface=INTERFACE)
     return "DONE"
 
 
 def red670_trip():
-    packet = red670_packet()
+    pkt = red670_packet()
     for i in range(PACKET_QTY):
-        sendp(packet, iface=INTERFACE)
+        sendp(pkt, iface=INTERFACE)
     return "DONE"
 
 
 def all_trip():
-    packet1 = ref620_packet()
-    packet2 = red670_packet()
+    pkt1 = ref620_packet()
+    pkt2 = red670_packet()
     for i in range(PACKET_QTY):
-        sendp(packet1, iface=INTERFACE)
-        sendp(packet2, iface=INTERFACE)
+        sendp(pkt1, iface=INTERFACE)
+        sendp(pkt2, iface=INTERFACE)
     return "DONE"
 
 
 if __name__ == '__main__':
     print("GOOSE packet for Scapy by Sever Sudakov")
     all_trip()
-
