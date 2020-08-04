@@ -166,6 +166,13 @@ def execute_goose_trip670():
     return 'OK'
 
 
+@app.route('/attack/ied/goose/tripall', methods=['POST'])
+def execute_goose_tripall():
+    logger.info('[GOOSE: Trip] Mimicking trip command from all IEDs '
+                + goose.all_trip())
+    return 'OK'
+
+
 @app.route('/attack/plc/slmp/stop', methods=['POST'])
 def execute_slmp_stop():
     logger.info('[SLMP: Stop] Sending unauthorized stop command to PLC '
