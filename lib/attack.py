@@ -9,7 +9,7 @@ time_out = 2
 
 
 def ping_status_check(target):
-    r = os.system('ping %s -n 1' %(target,))
+    r = os.system('ping %s -n 1 -w 500' %(target,))
     if r == 0:
         return "Online"
     else:
