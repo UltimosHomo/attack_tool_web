@@ -18,7 +18,7 @@ pycryptodomex==3.9.8
 pymodbus==2.3.0
 pyOpenSSL==19.1.0
 pyserial==3.4
-pywin32==228
+pywin32==301
 scapy==2.4.3
 six==1.15.0
 Werkzeug==1.0.1
